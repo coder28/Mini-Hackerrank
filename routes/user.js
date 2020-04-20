@@ -6,6 +6,7 @@ const auth=require('../middleware/auth')
 
 router.post('/signup',async(req,res)=>{
     const user=new User(req.body)
+    console.log(user)
     try{
         await user.save()
     }catch(e){
@@ -18,9 +19,6 @@ router.post('/login',async(req,res)=>{
     try{
         const user=await User.findByCredentials(req.body.email,req.body.password)
         const token=await user.generateAuthToken()
-        if(user.active==false){
-            return res.status(401).send('Email verification pending.')
-        }
         var data={
             loggedin:true,
             token:token,
@@ -50,7 +48,11 @@ router.post('/logout',auth,async(req,res)=>{
 
 
 router.get('/',(req,res)=>{
-    res.send('Hello from ADG')
+    res.send('Coding Portal!!')
+})
+
+router.get('/dashboard', (req,res) => {
+    res.send('All Questions!!')
 })
 
 module.exports=router
